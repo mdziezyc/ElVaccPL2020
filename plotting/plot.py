@@ -23,7 +23,7 @@ def plot(x, y, c, ax_title, y_label, x_label, path, ha_chart_text="left", ha_cha
     ax.plot(x, y_pred, color="#FFB000")
     plt.annotate(
         "Kolory reprezentują dochody gmin z PITu na 1 mieszkańca. Kwoty ucięte do 4000 zł (1 gmina powyżej tej wartości)."
-        "\nŹródło: PKW (2020), gov.pl/szczepimysie (17.02.22), GUS BDL (2020). Autor: Maciej Dzieżyc (2022, CC BY-ND 4.0)",
+        "\nŹródło: PKW (2020), gov.pl/szczepimysie (31.10.21), GUS BDL (2020). Autor: Maciej Dzieżyc (2022, CC BY-ND 4.0)",
         xy=(1.12, -0.16), xycoords='axes fraction', va='center', ha="right", fontsize=5)
 
     axins1 = ax.inset_axes([0.85 if ha_chart_bar == "right" else 0.05, 0.95, 0.1, 0.03])

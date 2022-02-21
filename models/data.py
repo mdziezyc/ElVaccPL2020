@@ -57,7 +57,7 @@ def get_dataframe_teryt_features() -> pd.DataFrame:
         election_results = teryt_election_results[teryt // 10]
         if teryt not in teryt_pit_per_person:
             teryt -= 1
-        pit_per_person = teryt_pit_per_person[teryt]
+        pit_per_person = min(4000.0, teryt_pit_per_person[teryt])
         income_per_person = teryt_income_per_person[teryt]
         density = teryt_denisty[teryt]
         row = [vaccination_rate] + election_results + [pit_per_person, income_per_person, density]

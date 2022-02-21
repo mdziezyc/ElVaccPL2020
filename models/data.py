@@ -63,8 +63,6 @@ def get_dataframe_teryt_features() -> pd.DataFrame:
         row = [vaccination_rate] + election_results + [pit_per_person, income_per_person, density]
         results.append(row)
 
-    return pd.DataFrame(results, columns=["Vaccination rate", "Attendance", "Valid", "BIEDROŃ", "BOSAK",
-                                          "DUDA", "HOŁOWNIA", "JAKUBIAK",
-                                          "KOSINIAK-KAMYSZ", "PIOTROWSKI",
-                                          "TANAJNO", "TRZASKOWSKI",
-                                          "WITKOWSKI", "ŻÓŁTEK", "PITPP", "Incomepp", "Density"])
+    return pd.DataFrame(results, columns=["Vaccination rate", "Attendance", "Valid", "BIEDROŃ", "BOSAK", "DUDA",
+                                          "HOŁOWNIA", "JAKUBIAK", "KOSINIAK-KAMYSZ", "PIOTROWSKI", "TANAJNO",
+                                          "TRZASKOWSKI", "WITKOWSKI", "ŻÓŁTEK", "PITPP", "Incomepp", "Density"])

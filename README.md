@@ -8,6 +8,8 @@ election results from 2020.
 Install `requirements.txt`. Run `main.py` to generate plots. Remove `data/vaccination.json` if you want to download the
 newest data (currently data are not updated, last update: 31.10.21).
 
+Results were used and interpreted in my [tweet](https://twitter.com/DziezycMaciej/status/1495721187137228805) (Polish).
+
 ## Data sources
 
 ### Statistic Poland (GUS)

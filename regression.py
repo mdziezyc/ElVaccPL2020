@@ -7,7 +7,11 @@ from models.data import get_dataframe_teryt_features
 results = get_dataframe_teryt_features()
 
 candidates = ["BIEDROŃ", "BOSAK", "DUDA", "HOŁOWNIA", "KOSINIAK-KAMYSZ", "TRZASKOWSKI"]
-independent_variables = candidates + ["PITPP"]
+independent_variables = candidates + ["Attendance", "PITPP"]
+valid_votes_perc = results["Attendance"] / 100 * results["Valid"] / 100
+
+for column in candidates:
+    results[column] = valid_votes_perc * results[column]
 
 x_train = results[independent_variables].to_numpy()
 y_train = results[["Vaccination rate"]].to_numpy()

@@ -28,8 +28,10 @@ def get_election_results() -> dict[int, list[float]]:
         reader = csv.reader(csvfile, delimiter=';')
         next(reader)
         for row in reader:
-            valid_votes_and_candidates = [polish_number_to_float(x) for x in row[-13:-1]]
+            valid = polish_number_to_float(row[-13])
             attendance = polish_number_to_float(row[6])
+            valid_votes = valid / 100 * attendance / 100
+            valid_votes_and_candidates = [polish_number_to_float(x) * valid_votes for x in row[-12:-1]]
             teryt_election_results[int(row[1])] = [attendance] + valid_votes_and_candidates
     return teryt_election_results
 
@@ -63,6 +65,6 @@ def get_dataframe_teryt_features() -> pd.DataFrame:
         row = [vaccination_rate] + election_results + [pit_per_person, income_per_person, density]
         results.append(row)
 
-    return pd.DataFrame(results, columns=["Vaccination rate", "Attendance", "Valid", "BIEDROŃ", "BOSAK", "DUDA",
+    return pd.DataFrame(results, columns=["Vaccination rate", "Attendance", "BIEDROŃ", "BOSAK", "DUDA",
                                           "HOŁOWNIA", "JAKUBIAK", "KOSINIAK-KAMYSZ", "PIOTROWSKI", "TANAJNO",
                                           "TRZASKOWSKI", "WITKOWSKI", "ŻÓŁTEK", "PITPP", "Incomepp", "Density"])

@@ -10,6 +10,10 @@ tfpl = tfp.layers
 tf.random.set_seed(42)
 
 
+def negative_log_likelihood(y_true, y_pred):
+    return -y_pred.log_prob(y_true)
+
+
 def preprocess_variables(df: pd.DataFrame, independent_variables: list[str]) -> (np.array, np.array):
     df = df.copy()
     for column in ["Vaccination rate", "Attendance", "BIEDROŃ", "BOSAK", "DUDA", "HOŁOWNIA", "JAKUBIAK",
@@ -27,9 +31,46 @@ def fit_linear_model(x_train, y_train):
         tf.keras.layers.Dense(units=tfpl.IndependentNormal.params_size(1), input_shape=(1,)),
         tfpl.IndependentNormal(event_shape=1)
     ])
-    model.compile(loss=lambda y_true, y_pred: -y_pred.log_prob(y_true), optimizer='adam')
+    model.compile(loss=negative_log_likelihood, optimizer='adam')
     model.fit(x_train, y_train, epochs=1000, verbose=0)
 
+    return model
+
+
+def fit_alea_epist_model(x_train, y_train):
+    def prior(kernel_size, bias_size, dtype=None):
+        n = kernel_size + bias_size
+        return tfpl.DistributionLambda(lambda t: tfd.MultivariateNormalDiag(loc=tf.zeros(n), scale_diag=tf.ones(n)))
+
+    def posterior(kernel_size, bias_size, dtype=None):
+        n = kernel_size + bias_size
+
+        posterior_model = tf.keras.Sequential([
+            tfpl.VariableLayer(tfpl.MultivariateNormalTriL.params_size(n), dtype=dtype),
+            tfpl.MultivariateNormalTriL(n)
+        ])
+
+        return posterior_model
+
+    model = tf.keras.Sequential([
+        tfpl.DenseVariational(units=1,
+                              input_shape=(1,),
+                              make_prior_fn=prior,
+                              make_posterior_fn=posterior,
+                              kl_weight=1 / x_train.shape[0],
+                              kl_use_exact=False),
+
+        tfpl.DenseVariational(units=tfpl.IndependentNormal.params_size(1),
+                              make_prior_fn=prior,
+                              make_posterior_fn=posterior,
+                              kl_use_exact=False,
+                              kl_weight=1 / x_train.shape[0]),
+
+        tfpl.IndependentNormal(1)
+    ])
+
+    model.compile(loss=negative_log_likelihood, optimizer='rmsprop')
+    model.fit(x_train, y_train, epochs=1000, verbose=0)
     return model
 
 

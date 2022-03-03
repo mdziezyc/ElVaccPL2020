@@ -19,7 +19,7 @@ def plot_with_linear_regression(x, x_label, filename, ha_chart_text="right", ha_
                      ha_chart_text=ha_chart_text, ha_chart_bar=ha_chart_bar, y_lower=None, y_upper=None)
 
 
-def plot_stochastic_linear_regression(x_train, x_label, filename, ha_chart_text="right", ha_chart_bar="left"):
+def plot_aleatoric_uncertainty(x_train, x_label, filename, ha_chart_text="right", ha_chart_bar="left"):
     x_train = x_train.to_numpy() / 100
     y_vaccination = results["Vaccination rate"].to_numpy() / 100
 
@@ -35,7 +35,7 @@ def plot_stochastic_linear_regression(x_train, x_label, filename, ha_chart_text=
     y_hat_upper = np.squeeze(y_hat + 2 * y_sd)
 
     plot_vaccination(100 * x_train, 100 * y_vaccination, results["PITPP"], 100 * x, 100 * y_hat, r2,
-                     float(model.trainable_weights[0][0][0]), 100 * y_hat[0], x_label, f"stochastic/{filename}",
+                     float(model.trainable_weights[0][0][0]), 100 * y_hat[0], x_label, f"aleatoric/{filename}",
                      y_lower=100 * y_hat_lower, y_upper=100 * y_hat_upper, ha_chart_text=ha_chart_text,
                      ha_chart_bar=ha_chart_bar)
 
@@ -43,7 +43,7 @@ def plot_stochastic_linear_regression(x_train, x_label, filename, ha_chart_text=
 def plot_all_for(x, x_label, filename, ha_chart_text="right", ha_chart_bar="left"):
     logging.info("Generating plots for %s", filename)
     plot_with_linear_regression(x, x_label, filename, ha_chart_text=ha_chart_text, ha_chart_bar=ha_chart_bar)
-    plot_stochastic_linear_regression(x, x_label, filename, ha_chart_text=ha_chart_text, ha_chart_bar=ha_chart_bar)
+    plot_aleatoric_uncertainty(x, x_label, filename, ha_chart_text=ha_chart_text, ha_chart_bar=ha_chart_bar)
     plt.close('all')
 
 

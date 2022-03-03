@@ -10,6 +10,11 @@ newest data (currently data are not updated, last update: 31.10.21).
 
 Results were used and interpreted in my [tweet](https://twitter.com/DziezycMaciej/status/1495721187137228805) (Polish).
 
+## Additional content
+
+Also, aleatoric uncertainty modeling was added to the repository using Tensorflow Probability. Figures are presented in
+`figures/aleatoric`.
+
 ## Data sources
 
 ### Statistic Poland (GUS)

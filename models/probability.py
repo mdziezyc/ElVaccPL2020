@@ -32,7 +32,7 @@ def fit_linear_model(x_train, y_train):
         tfpl.IndependentNormal(event_shape=1)
     ])
     model.compile(loss=negative_log_likelihood, optimizer='adam')
-    model.fit(x_train, y_train, epochs=1000, verbose=0)
+    model.fit(x_train, y_train, epochs=2000, verbose=0)
 
     return model
 
@@ -70,7 +70,7 @@ def fit_alea_epist_model(x_train, y_train):
     ])
 
     model.compile(loss=negative_log_likelihood, optimizer='rmsprop')
-    model.fit(x_train, y_train, epochs=1000, verbose=0)
+    model.fit(x_train, y_train, epochs=2000, verbose=0)
     return model
 
 

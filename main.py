@@ -40,6 +40,7 @@ def plot_aleatoric_uncertainty(x_train, x_label, filename, ha_chart_text="right"
                      ha_chart_bar=ha_chart_bar)
 
 
+# Plots both aleatoric and epistemic uncertainty
 def plot_alea_epist_uncertainty(x_train, x_label, filename, ha_chart_bar="left"):
     x_train = x_train.to_numpy() / 100
     y_vaccination = results["Vaccination rate"].to_numpy() / 100
@@ -58,14 +59,14 @@ def plot_alea_epist_uncertainty(x_train, x_label, filename, ha_chart_bar="left")
 
     plot_us(100 * x_train, 100 * y_vaccination, results["PITPP"], 100 * x, y_pred,
             "Wyszczepienie gmin a wyniki wyborów prezydenckich 2020",
-            "% w pełni zaszczepionych na COVID-19 w gminie", x_label, f"all_un/{filename}",
+            "% w pełni zaszczepionych na COVID-19 w gminie", x_label, f"all_uncertainty/{filename}",
             ha_chart_bar=ha_chart_bar)
 
 
 def plot_all_for(x, x_label, filename, ha_chart_text="right", ha_chart_bar="left"):
     logging.info("Generating plots for %s", filename)
-    # plot_with_linear_regression(x, x_label, filename, ha_chart_text=ha_chart_text, ha_chart_bar=ha_chart_bar)
-    # plot_aleatoric_uncertainty(x, x_label, filename, ha_chart_text=ha_chart_text, ha_chart_bar=ha_chart_bar)
+    plot_with_linear_regression(x, x_label, filename, ha_chart_text=ha_chart_text, ha_chart_bar=ha_chart_bar)
+    plot_aleatoric_uncertainty(x, x_label, filename, ha_chart_text=ha_chart_text, ha_chart_bar=ha_chart_bar)
     plot_alea_epist_uncertainty(x, x_label, filename, ha_chart_bar=ha_chart_bar)
     plt.close('all')
 

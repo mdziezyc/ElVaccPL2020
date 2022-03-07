@@ -5,8 +5,8 @@ from matplotlib import pyplot as plt
 from sklearn.metrics import r2_score
 
 from models.data import get_dataframe_teryt_features
-from models.probability import fit_linear_model, validate_model
-from plotting.plot import plot_vaccination
+from models.probability import fit_linear_model, validate_model, fit_alea_epist_model
+from plotting.plot import plot_vaccination, plot_us
 
 
 def plot_with_linear_regression(x, x_label, filename, ha_chart_text="right", ha_chart_bar="left"):
@@ -40,10 +40,34 @@ def plot_aleatoric_uncertainty(x_train, x_label, filename, ha_chart_text="right"
                      ha_chart_bar=ha_chart_bar)
 
 
+# Plots both aleatoric and epistemic uncertainty
+def plot_alea_epist_uncertainty(x_train, x_label, filename, ha_chart_bar="left"):
+    x_train = x_train.to_numpy() / 100
+    y_vaccination = results["Vaccination rate"].to_numpy() / 100
+
+    model = fit_alea_epist_model(x_train, y_vaccination)
+    x = np.linspace(max(min(x_train) - 0.01, 0), min(max(x_train) + 0.01, 1), 1000)
+    y_pred = []
+    for i in range(10):
+        y_hat = np.squeeze(model(x).mean())
+        y_sd = np.squeeze(model(x).stddev())
+
+        y_hat_lower = np.squeeze(y_hat - 2 * y_sd)
+        y_hat_upper = np.squeeze(y_hat + 2 * y_sd)
+
+        y_pred.append((100 * y_hat, 100 * y_hat_lower, 100 * y_hat_upper))
+
+    plot_us(100 * x_train, 100 * y_vaccination, results["PITPP"], 100 * x, y_pred,
+            "Wyszczepienie gmin a wyniki wyborów prezydenckich 2020",
+            "% w pełni zaszczepionych na COVID-19 w gminie", x_label, f"all_uncertainty/{filename}",
+            ha_chart_bar=ha_chart_bar)
+
+
 def plot_all_for(x, x_label, filename, ha_chart_text="right", ha_chart_bar="left"):
     logging.info("Generating plots for %s", filename)
     plot_with_linear_regression(x, x_label, filename, ha_chart_text=ha_chart_text, ha_chart_bar=ha_chart_bar)
     plot_aleatoric_uncertainty(x, x_label, filename, ha_chart_text=ha_chart_text, ha_chart_bar=ha_chart_bar)
+    plot_alea_epist_uncertainty(x, x_label, filename, ha_chart_bar=ha_chart_bar)
     plt.close('all')
 
 

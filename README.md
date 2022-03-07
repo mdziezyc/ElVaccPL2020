@@ -12,8 +12,19 @@ Results were used and interpreted in my [tweet](https://twitter.com/DziezycMacie
 
 ## Additional content
 
-Also, aleatoric uncertainty modeling was added to the repository using Tensorflow Probability. Figures are presented in
-`figures/aleatoric`.
+Aleatoric and epistemic uncertainty modeling using Tensorflow Probability. Figures are presented in `figures/aleatoric`
+and `figures/all_uncertainty`. Terminology and code inspired by
+[Aleksander Molak's post](https://towardsdatascience.com/modeling-uncertainty-in-neural-networks-with-tensorflow-probability-part-1-an-introduction-2bb564c67d6)
+.
+
+If you want to regarate plots only used in tweet you can remove lines:
+
+```python
+plot_aleatoric_uncertainty(x, x_label, filename, ha_chart_text=ha_chart_text, ha_chart_bar=ha_chart_bar)
+plot_alea_epist_uncertainty(x, x_label, filename, ha_chart_bar=ha_chart_bar)
+```
+
+from `main.py`.
 
 ## Data sources
 
